@@ -38,52 +38,57 @@ def batting_comparision(Team1, Team2, ball_data):
     per_over_1 = np.array([powerplay_runs / 6, middle_overs_runs / 9, death_overs_runs / 5])
     per_over_2 = np.array([powerplay_runs_2 / 6, middle_overs_runs_2 / 9, death_overs_runs_2 / 5])
 
-    # Set up the figure and subplots
-    fig, ((ax1, ax2), (ax3, ax4)) = plt.subplots(nrows=2, ncols=2, figsize=(15,10))
-    plt.subplots_adjust(wspace=0.4, hspace=0.4)
-
-    # Calculate max values for consistent y-axis range
+    # Set the width of the bars and their positions
+    bar_width = 0.35
+    x = np.arange(len(phases))  # label locations
+    
     max_total_runs = max(max(total_runs_1 / (14*len(Team1))), max(total_runs_2 / (14*len(Team2)))) + 2
     max_per_over_runs = max(max(per_over_1 / (14*len(Team1))), max(per_over_2 / (14*len(Team2)))) + 0.5
 
-    # Team 1: Total runs
-    bars1 = ax1.bar(phases, total_runs_1 / (14*len(Team1)), color='skyblue')
-    ax1.set(title=f'{", ".join([short_names[team] for team in Team1])} - Runs per match', ylabel="Runs", xlabel="Phases")
-    ax1.set_ylim(0, max_total_runs + 5)  # Ensure the same y-axis range for total runs comparison
+    # Set up the figure and subplots (2 subplots)
+    fig, (ax1, ax2) = plt.subplots(nrows=2, ncols=1, figsize=(10, 10))
+    
+    
+    plt.subplots_adjust(wspace=0.4)
+
+    # Total runs comparison
+    bars1 = ax1.bar(x - bar_width / 2, total_runs_1/(14*len(Team1)), width=bar_width, label=f'{", ".join([short_names[team] for team in Team1])}', color='skyblue')
+    bars2 = ax1.bar(x + bar_width / 2, total_runs_2/(14*len(Team2)), width=bar_width, label=f'{", ".join([short_names[team] for team in Team2])}', color='lightcoral')
+    ax1.set(title='Total Runs per Match', ylabel="Total Runs", xlabel="Phases")
+    ax1.set_ylim(0, max_total_runs + 25)  # Ensure the same y-axis range for total runs comparison
+    ax1.set_xticks(x)
+    ax1.set_xticklabels(phases)
+    ax1.legend()
+
+    # Display values on each bar (Team 1 & Team 2 total runs)
     for bar in bars1:
         height = bar.get_height()
         ax1.text(bar.get_x() + bar.get_width() / 2, height, f'{height:.2f}', ha='center', va='bottom')
 
-    # Team 1: Runs per over
-    bars3 = ax3.bar(phases, per_over_1 / (14*len(Team1)), color='lightgreen')
-    ax3.set(title=f'{", ".join([short_names[team] for team in Team1])} - Runs per Over', ylabel="Runs", xlabel="Phases")
-    ax3.set_ylim(0, max_per_over_runs + 0.5)  # Ensure the same y-axis range for runs per over comparison
-    for bar in bars3:
-        height = bar.get_height()
-        ax3.text(bar.get_x() + bar.get_width() / 2, height, f'{height:.2f}', ha='center', va='bottom')
-
-    # Team 2: Total runs
-    bars2 = ax2.bar(phases, total_runs_2 / (14*len(Team2)), color='lightcoral')
-    ax2.set(title=f'{", ".join([short_names[team] for team in Team2])} - Runs per match', ylabel="Runs", xlabel="Phases")
-    ax2.set_ylim(0, max_total_runs + 5)  # Ensure the same y-axis range for total runs comparison
     for bar in bars2:
+        height = bar.get_height()
+        ax1.text(bar.get_x() + bar.get_width() / 2, height, f'{height:.2f}', ha='center', va='bottom')
+
+    # Runs per over comparison
+    bars3 = ax2.bar(x - bar_width / 2, per_over_1/(14*len(Team1)), width=bar_width, label=f'{", ".join([short_names[team] for team in Team1])}', color='lightgreen')
+    bars4 = ax2.bar(x + bar_width / 2, per_over_2/(14*len(Team2)), width=bar_width, label=f'{", ".join([short_names[team] for team in Team2])}', color='orange')
+    ax2.set(title='Runs per Over', ylabel="Runs per Over", xlabel="Phases")
+    ax2.set_ylim(0, max_per_over_runs + 2.5)
+    ax2.set_xticks(x)
+    ax2.set_xticklabels(phases)
+    ax2.legend()
+
+    # Display values on each bar (Team 1 & Team 2 runs per over)
+    for bar in bars3:
         height = bar.get_height()
         ax2.text(bar.get_x() + bar.get_width() / 2, height, f'{height:.2f}', ha='center', va='bottom')
 
-    # Team 2: Runs per over
-    bars4 = ax4.bar(phases, per_over_2 / (14*len(Team2)), color='orange')
-    ax4.set(title=f'{", ".join([short_names[team] for team in Team2])} - Runs per Over', ylabel="Runs", xlabel="Phases")
-    ax4.set_ylim(0, max_per_over_runs + 0.5)  # Ensure the same y-axis range for runs per over comparison
     for bar in bars4:
         height = bar.get_height()
-        ax4.text(bar.get_x() + bar.get_width() / 2, height, f'{height:.2f}', ha='center', va='bottom')
+        ax2.text(bar.get_x() + bar.get_width() / 2, height, f'{height:.2f}', ha='center', va='bottom')
 
     # Add a main title for the entire figure
     fig.suptitle('Team Performance Analysis in Different Phases', fontsize=16)
-
-    # Add combined titles
-    fig.text(0.5, 0.92, 'Average Runs Comparison', ha='center', fontsize=14)
-    fig.text(0.5, 0.48, 'Runs Per Over Comparison', ha='center', fontsize=14)
 
     return fig
 
@@ -150,6 +155,8 @@ def wickets_comparison(Team1, Team2, ball_data):
     
     
     
+    
+    
     # Total wickets lost per phase for each team
     total_wickets_1 = np.array([powerplay_wickets, middle_overs_wickets, death_overs_wickets])
     total_wickets_2 = np.array([powerplay_wickets_2, middle_overs_wickets_2, death_overs_wickets_2])
@@ -160,44 +167,58 @@ def wickets_comparison(Team1, Team2, ball_data):
 
     # Graph generation
     phases = np.array(["Powerplay", "Middle Overs", "Death Overs"])
+    
+    
+    # Set the width of the bars and their positions
+    bar_width = 0.35
+    x = np.arange(len(phases))  # label locations
 
-    fig, ((ax1, ax2), (ax3, ax4)) = plt.subplots(nrows=2, ncols=2, figsize=(15,10))
-    plt.subplots_adjust(wspace=0.4, hspace=0.4)
+    fig,(ax1, ax2) = plt.subplots(nrows=2, ncols=1, figsize=(10,10))
+    plt.subplots_adjust(wspace=0.4)
 
     # Set the same y-axis limit for total wickets comparison
     max_total_wickets = max(max(total_wickets_1/len(Team1)), max(total_wickets_2/len(Team2))) + 5
 
     # Team 1 total wickets lost
-    ax1.bar(phases, total_wickets_1/len(Team1), color="skyblue")
-    ax1.set(title=f'{", ".join([short_names[team] for team in Team1])}', ylabel="Wickets", xlabel="Phases")
-    ax1.set_ylim(0, max_total_wickets + 0.5)  # Ensure same y-axis range
-    for i, value in enumerate(total_wickets_1/len(Team1)):
-        ax1.text(i, value, f'{value:.2f}', ha='center', va='bottom')
+    bars1=ax1.bar(x- bar_width / 2, total_wickets_1/len(Team1), width=bar_width, label=f'{", ".join([short_names[team] for team in Team1])}', color="skyblue")
+    bars2 = ax1.bar(x+bar_width / 2, total_wickets_2/len(Team2), width=bar_width, label=f'{", ".join([short_names[team] for team in Team2])}',color="lightcoral")
+    ax1.set_ylim(0, max_total_wickets + 10)
+    ax1.set_xticks(x)
+    ax1.set_xticklabels(phases)
+    ax1.legend()
+    
+    
+    # Display values on each bar (Team 1 & Team 2 total runs)
+    for bar in bars1:
+        height = bar.get_height()
+        ax1.text(bar.get_x() + bar.get_width() / 2, height, f'{height:.2f}', ha='center', va='bottom')
 
-    # Team 2 total wickets lost
-    ax2.bar(phases, total_wickets_2/len(Team2), color="lightcoral")
-    ax2.set(title=f'{", ".join([short_names[team] for team in Team2])}', ylabel="Wickets", xlabel="Phases")
-
-    ax2.set_ylim(0, max_total_wickets + 0.5)  # Ensure same y-axis range
-    for i, value in enumerate(total_wickets_2/len(Team2)):
-        ax2.text(i, value, f'{value:.2f}', ha='center', va='bottom')
+    for bar in bars2:
+        height = bar.get_height()
+        ax1.text(bar.get_x() + bar.get_width() / 2, height, f'{height:.2f}', ha='center', va='bottom')
 
     # Set the same y-axis limit for average wickets comparison
     max_avg_wickets = max(max(avg_wickets_1), max(avg_wickets_2)) + 0.5
 
     # Team 1 average wickets lost per match
-    ax3.bar(phases, avg_wickets_1, color="lightgreen")
-    ax3.set(title=f'{", ".join([short_names[team] for team in Team2])} (Avg)', ylabel="Wickets per match", xlabel="Phases")
-    ax3.set_ylim(0, max_avg_wickets + 0.05)  # Ensure same y-axis range
-    for i, value in enumerate(avg_wickets_1):
-        ax3.text(i, value, f'{value:.2f}', ha='center', va='bottom')
+    bars3 = ax2.bar(x- bar_width / 2, avg_wickets_1, width=bar_width, label=f'{", ".join([short_names[team] for team in Team1])}', color="lightgreen")
+    bars4 = ax2.bar(x+ bar_width / 2, avg_wickets_2, width=bar_width, label=f'{", ".join([short_names[team] for team in Team2])}', color="orange" )
+    ax2.set_ylim(0, max_avg_wickets + 1)
+    ax2.set_xticks(x)
+    ax2.set_xticklabels(phases)
+    ax2.legend()
+    
+    
+    
+    # Display values on each bar (Team 1 & Team 2 runs per over)
+    for bar in bars3:
+        height = bar.get_height()
+        ax2.text(bar.get_x() + bar.get_width() / 2, height, f'{height:.2f}', ha='center', va='bottom')
 
-    # Team 2 average wickets lost per match
-    ax4.bar(phases, avg_wickets_2, color="orange")
-    ax4.set(title=f'{", ".join([short_names[team] for team in Team2])} (Avg)', ylabel="Wickets per match", xlabel="Phases")
-    ax4.set_ylim(0, max_avg_wickets + 0.05)  # Ensure same y-axis range
-    for i, value in enumerate(avg_wickets_2):
-        ax4.text(i, value, f'{value:.2f}', ha='center', va='bottom')
+    for bar in bars4:
+        height = bar.get_height()
+        ax2.text(bar.get_x() + bar.get_width() / 2, height, f'{height:.2f}', ha='center', va='bottom')
+    
 
     # Add a main title for the entire figure
     fig.suptitle('Wickets Lost Analysis in Different Phases', fontsize=16)

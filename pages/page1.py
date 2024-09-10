@@ -83,12 +83,12 @@ st.title("IPL 2022 Teams Performance Comparison")
     
 option = st.selectbox(
     'Select the type of plot',
-    ('Runs per Match', 'Wickets Lost per Match', 'Runs Conceded per Match', 'Wickets Taken per Match')
+    ('Runs scored per Match', 'Wickets Lost per Match', 'Runs Conceded per Match', 'Wickets Taken per Match')
 )
 
 # Button to trigger analysis
 if st.button("Generate Graph"):    
-    if option == 'Runs per Match':
+    if option == 'Runs scored per Match':
         fig = plot_runs_per_match(ball_data)
     elif option == 'Wickets Lost per Match':
         fig = plot_lost_wkt_per_match(ball_data)
