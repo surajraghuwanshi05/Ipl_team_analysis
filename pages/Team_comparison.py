@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd 
 import matplotlib.pyplot as plt
-from main import ball_data
+from Main import ball_data
 
 
 short_names = {
@@ -87,7 +87,7 @@ option = st.selectbox(
 )
 
 # Button to trigger analysis
-if st.button("Generate Graph"):    
+if st.button("Generate Graph."):    
     if option == 'Runs scored per Match':
         fig = plot_runs_per_match(ball_data)
     elif option == 'Wickets Lost per Match':

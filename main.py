@@ -14,8 +14,8 @@ st.set_page_config(
 
 
 # Load the data
-match_data0 = pd.read_csv("IPL_Matches_2022.csv")
-ball_data0 = pd.read_csv("IPL_Ball_by_Ball_2022.csv")
+match_data0 = pd.read_csv("dataset/IPL_Matches_2022.csv")
+ball_data0 = pd.read_csv("dataset/IPL_Ball_by_Ball_2022.csv")
 
 # Remove invalid match IDs
 match_data = match_data0[~match_data0["ID"].isin([1312200, 1312199, 1312198, 1312197])]
@@ -32,27 +32,21 @@ st.sidebar.success("Select a page above.")
 # Select teams (allow multiple selection)
 team_list = sorted(ball_data["BattingTeam"].unique())
 team1 = st.multiselect("Select Team 1 (multiple teams allowed)", team_list, default=[team_list[0]])
-team2 = st.multiselect("Select Team 2 (multiple teams allowed)", team_list, default=[team_list[1]])
+team2 = st.multiselect("Select Team 2 (multiple teams allowed)", team_list, default=[team_list[2]])
 
 # Select analysis type
-analysis_type = st.selectbox("Select Analysis Type", ["Compare Batting by Phases", "Compare Runs by Over", "Compare Bowling by Phases"])
+analysis_type = st.selectbox("Select Analysis Type", ["Compare Batting by Phases","Compare Bowling by Phases"])
 
 # Button to trigger analysis
 if st.button("Generate Graph"):
     if analysis_type == "Compare Batting by Phases":
         fig1 = batting_comparision(team1, team2, ball_data)  # Lists are passed
         fig2 = wickets_comparison(team1, team2, ball_data)
+        fig = batting_comparison_by_over(team1, team2, ball_data)
         st.pyplot(fig1)
         st.pyplot(fig2)
-    elif analysis_type == "Compare Runs by Over":
-        fig = batting_comparison_by_over(team1, team2, ball_data)
         st.pyplot(fig)
-    # elif analysis_type == "Compare Lost Wickets":
-    #     fig = wickets_comparison(team1, team2, ball_data)
-    #     st.pyplot(fig)
-    # elif analysis_type == "Run Conceded by Bowlers":
-    #     fig = run_conced_comparision(team1, team2, ball_data)
-    #     st.pyplot(fig)
+
     elif analysis_type == "Compare Bowling by Phases":
         fig1 = taken_wkt_comparision(team1, team2, ball_data)
         fig2 = run_conced_comparision(team1, team2, ball_data)

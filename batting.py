@@ -70,8 +70,8 @@ def batting_comparision(Team1, Team2, ball_data):
         ax1.text(bar.get_x() + bar.get_width() / 2, height, f'{height:.2f}', ha='center', va='bottom')
 
     # Runs per over comparison
-    bars3 = ax2.bar(x - bar_width / 2, per_over_1/(14*len(Team1)), width=bar_width, label=f'{", ".join([short_names[team] for team in Team1])}', color='lightgreen')
-    bars4 = ax2.bar(x + bar_width / 2, per_over_2/(14*len(Team2)), width=bar_width, label=f'{", ".join([short_names[team] for team in Team2])}', color='orange')
+    bars3 = ax2.bar(x - bar_width / 2, per_over_1/(14*len(Team1)), width=bar_width, label=f'{", ".join([short_names[team] for team in Team1])}', color='skyblue')
+    bars4 = ax2.bar(x + bar_width / 2, per_over_2/(14*len(Team2)), width=bar_width, label=f'{", ".join([short_names[team] for team in Team2])}', color='lightcoral')
     ax2.set(title='Runs per Over', ylabel="Runs per Over", xlabel="Phases")
     ax2.set_ylim(0, max_per_over_runs + 2.5)
     ax2.set_xticks(x)
@@ -201,8 +201,8 @@ def wickets_comparison(Team1, Team2, ball_data):
     max_avg_wickets = max(max(avg_wickets_1), max(avg_wickets_2)) + 0.5
 
     # Team 1 average wickets lost per match
-    bars3 = ax2.bar(x- bar_width / 2, avg_wickets_1, width=bar_width, label=f'{", ".join([short_names[team] for team in Team1])}', color="lightgreen")
-    bars4 = ax2.bar(x+ bar_width / 2, avg_wickets_2, width=bar_width, label=f'{", ".join([short_names[team] for team in Team2])}', color="orange" )
+    bars3 = ax2.bar(x- bar_width / 2, avg_wickets_1, width=bar_width, label=f'{", ".join([short_names[team] for team in Team1])}', color="skyblue")
+    bars4 = ax2.bar(x+ bar_width / 2, avg_wickets_2, width=bar_width, label=f'{", ".join([short_names[team] for team in Team2])}', color="lightcoral" )
     ax2.set_ylim(0, max_avg_wickets + 1)
     ax2.set_xticks(x)
     ax2.set_xticklabels(phases)
